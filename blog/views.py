@@ -1,4 +1,5 @@
 import folium
+import json
 
 from django.db.models import Count
 from django.shortcuts import get_object_or_404
@@ -51,19 +52,20 @@ def post_detail(request, slug):
         })
 
     serialized_post = {
-        "title": post.title,
-        "text": post.text,
-        "author": post.author.username,
-        "comments": serialized_comments,
+        'title': post.title,
+        'text': post.text,
+        'author': post.author.username,
+        'comments': serialized_comments,
         'likes_amount': post.likes.count(),
-        "image_url": post.image.url if post.image else None,
-        "published_at": post.published_at,
-        "slug": post.slug,
+        'image_url': post.image.url if post.image else None,
+        'published_at': post.published_at,
+        'slug': post.slug,
     }
 
     context = {
         'post': serialized_post,
     }
+    print(json.dumps(context, indent=2, default=str, ensure_ascii=False))
     return render(request, 'blog-details.html', context)
 
 
